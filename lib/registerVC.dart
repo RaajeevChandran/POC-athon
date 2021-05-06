@@ -78,7 +78,9 @@ class _RegisterVCState extends State<RegisterVC> {
               SizedBox(height: 20),
               RoundedLoadingButton(
                   controller: controller,
-                  onPressed: () {},
+                  onPressed: () {
+                    
+                  },
                   child: Text('Submit to verify'))
             ]),
           ),
