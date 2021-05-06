@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:lottie/lottie.dart';
@@ -65,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Color(0xFFF5a39e7),
                   onPressed: () async {
                     try {
+                      
                       var response = await Dio().post(
                           "https://votefromhome.herokuapp.com/api/${auth == "Sign Up" ? "signup" : "signin"}",
                           data: {"username": username, "password": password});

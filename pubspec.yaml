@@ -37,9 +37,10 @@ dependencies:
   lottie:
   provider: ^5.0.0
   http:
-  firebase_core: 
-  firebase_storage: 
-  cloud_firestore: 
+  firebase_core: ^1.0.4
+  firebase_storage: ^8.0.4
+  firebase_auth: ^1.1.0
+  cloud_firestore: ^1.0.6
   dotted_border: ^2.0.0
   platform_action_sheet: ^0.0.3
   image_picker: ^0.7.4

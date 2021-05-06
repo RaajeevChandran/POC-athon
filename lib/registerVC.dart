@@ -4,7 +4,11 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:platform_action_sheet/platform_action_sheet.dart';
+import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:votefromhome/helpers/db.dart';
+
+import 'providers/userProvider.dart';
 
 class RegisterVC extends StatefulWidget {
   @override
@@ -15,8 +19,11 @@ RoundedLoadingButtonController controller = RoundedLoadingButtonController();
 
 class _RegisterVCState extends State<RegisterVC> {
   File _image, _image2;
+  
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: true);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -29,9 +36,9 @@ class _RegisterVCState extends State<RegisterVC> {
                   child: Center(
             child: Column(children: [
               SizedBox(height: 20),
-              buildTextField('Enter your name'),
+              buildTextField('Enter your name',TextInputType.name),
               SizedBox(height: 20),
-              buildTextField('Enter your Aadhar number'),
+              buildTextField('Enter your Aadhar number',TextInputType.number),
               SizedBox(
                 height: 20,
               ),
@@ -78,8 +85,8 @@ class _RegisterVCState extends State<RegisterVC> {
               SizedBox(height: 20),
               RoundedLoadingButton(
                   controller: controller,
-                  onPressed: () {
-                    
+                  onPressed: () async {
+                    await DB().addImages( userProvider.currentUser.username, _image, _image2);
                   },
                   child: Text('Submit to verify'))
             ]),
@@ -121,7 +128,7 @@ class _RegisterVCState extends State<RegisterVC> {
     }
   }
 
-  Widget buildTextField(String label) {
+  Widget buildTextField(String label,TextInputType type) {
     return Center(
       child: Container(
           width: MediaQuery.of(context).size.width * .75,
@@ -132,6 +139,7 @@ class _RegisterVCState extends State<RegisterVC> {
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: TextFormField(
+              keyboardType: type,
               style: TextStyle(color: Color(0xFFF191720)),
               cursorColor: Colors.black,
               decoration: InputDecoration(
