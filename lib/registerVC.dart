@@ -26,18 +26,24 @@ class _RegisterVCState extends State<RegisterVC> {
         Provider.of<UserProvider>(context, listen: true);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFF0059a4),
         appBar: AppBar(
-          title: Text('Enter details to submit to verifier'),
+          title: Row(
+            children: [
+              Container(width:120,child: Image.asset('assets/images/logo.png')),
+              Text('Enter details to submit to verifier'),
+            ],
+          ),
           automaticallyImplyLeading: false,
           centerTitle: true,
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xFF0059a4),
         ),
         body: SingleChildScrollView(
                   child: Center(
             child: Column(children: [
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               buildTextField('Enter your name',TextInputType.name),
-              SizedBox(height: 20),
+              SizedBox(height: 13),
               buildTextField('Enter your Aadhar number',TextInputType.number),
               SizedBox(
                 height: 20,
@@ -45,21 +51,28 @@ class _RegisterVCState extends State<RegisterVC> {
               GestureDetector(
                 onTap: () => openSheet(isAfter: true),
                 child: DottedBorder(
-                  child: Column(
-                    children: [
-                      _image == null
-                          ? Image.asset(
-                              'assets/images/aadhar.png',
-                              width: 250,
-                              height: 250,
-                            )
-                          : Image.file(_image, width: 250, height: 250),
-                      // SizedBox(height: 1,),
-                      Text('Add your Aadhar document '),
-                      SizedBox(
-                        height: 3,
-                      )
-                    ],
+                  strokeWidth: 2,
+                  borderType: BorderType.RRect,
+                  radius: Radius.circular(10),
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        _image == null
+                            ? Image.asset(
+                                'assets/images/aadhar.png',
+                                width: 250,
+                                height: 250,
+                              )
+                            : Image.file(_image, width: 250, height: 250),
+                        // SizedBox(height: 1,),
+                        Text('Add your Aadhar document ',style: TextStyle(color: Colors.white),),
+                        SizedBox(
+                          height: 3,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -67,26 +80,34 @@ class _RegisterVCState extends State<RegisterVC> {
               GestureDetector(
                 onTap: () => openSheet(isAfter: false),
                 child: DottedBorder(
-                  child: Column(
-                    children: [
-                      _image2 == null
-                          ? Image.asset('assets/images/hold2.png',
-                              height: 250, width: 250)
-                          : Image.file(
-                              _image2,
-                              width: 250,
-                              height: 250,
-                            ),
-                      Text('Add a image of yourself holding your Aadhar')
-                    ],
+                  strokeWidth: 2,
+                  borderType: BorderType.RRect,
+                  radius: Radius.circular(10),
+                  color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+
+                      children: [
+                        _image2 == null
+                            ? Image.asset('assets/images/hold2.png',
+                                height: 250, width: 250)
+                            : Image.file(
+                                _image2,
+                                width: 250,
+                                height: 250,
+                              ),
+                        Text('Add a image of yourself holding your Aadhar',style: TextStyle(color:Colors.white),)
+                      ],
+                    ),
                   ),
                 ),
               ),
               SizedBox(height: 20),
-              RoundedLoadingButton(
-                  controller: controller,
+              RaisedButton(
+                  // controller: controller,
                   onPressed: () async {
-                    await DB().addImages( userProvider.currentUser.username, _image, _image2);
+                    await DB().addImages( userProvider, _image, _image2);
                   },
                   child: Text('Submit to verify'))
             ]),
@@ -131,22 +152,28 @@ class _RegisterVCState extends State<RegisterVC> {
   Widget buildTextField(String label,TextInputType type) {
     return Center(
       child: Container(
+        
           width: MediaQuery.of(context).size.width * .75,
           height: 54,
           decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFFF313039), width: 3),
+            color: Colors.white,
+              //border: Border.all(color: Color(0xFFF313039), width: 3),
               borderRadius: BorderRadius.circular(20)),
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: TextFormField(
+              
               keyboardType: type,
               style: TextStyle(color: Color(0xFFF191720)),
               cursorColor: Colors.black,
               decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                focusColor: Colors.white,
                   border: InputBorder.none,
                   hintText: label,
                   hintStyle: TextStyle(
-                      color: Color(0xFFF7c7d89), fontWeight: FontWeight.bold)),
+                      color: Color(0xFFF7c7d89),)),
             ),
           )),
     );

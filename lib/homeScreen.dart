@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:votefromhome/notVerified.dart';
 import 'package:votefromhome/providers/userProvider.dart';
 import 'package:votefromhome/registerVC.dart';
+
+import 'voteDashboard.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -16,30 +19,63 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<UserProvider>(context, listen: true);
     // print(userProvider.currentUser.username);
     CollectionReference users =
-        FirebaseFirestore.instance.collection('unsignedVC');
+        FirebaseFirestore.instance.collection('users');
 
     return Scaffold(
         body: SafeArea(
       child: Scaffold(
           backgroundColor: Color(0xFFF0F0EF),
-          body: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/images/character.gif'),
-              Text(
-                  'Uh Oh! Looks like you are UNREGISTERED! \n \tContinue to register with our partner',
-                  style:
-                      TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 20,),
-              OutlinedButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterVC()));
-              },child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text('Continue',style:TextStyle(fontSize: 19.0)),
-              ),)
-            ],
-          ))),
+          body: FutureBuilder(
+              future: users
+                  .where('username',
+                      isEqualTo: userProvider.currentUser.username).get(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState){
+                  case ConnectionState.waiting:
+                    return Center(child:CircularProgressIndicator());
+                  case ConnectionState.done:
+                    return wgd(snapshot,context);
+                  default:
+                    return Text('Oops! Something went wrong');
+                }
+              })),
     ));
+  }
+  Widget wgd(AsyncSnapshot snapshot,BuildContext context){
+    if(snapshot.data.docs.length>0){
+      if(snapshot.data.docs[0]['isVerified']==true){
+        return VoteDashboard();
+      }else{
+        return NotVerified();
+      }
+    }
+    else{
+      return Center(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/character.gif'),
+                    Text(
+                        'Uh Oh! Looks like you are UNREGISTERED! \n \tContinue to register with our partner',
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    OutlinedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterVC()));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child:
+                            Text('Continue', style: TextStyle(fontSize: 19.0)),
+                      ),
+                    )
+                  ],
+                ));}
   }
 }
