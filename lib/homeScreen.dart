@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:votefromhome/providers/userProvider.dart';
 import 'package:votefromhome/registerVC.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -9,6 +12,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: true);
+    // print(userProvider.currentUser.username);
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('unsignedVC');
+
     return Scaffold(
         body: SafeArea(
       child: Scaffold(
