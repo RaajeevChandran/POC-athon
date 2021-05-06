@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:votefromhome/providers/userProvider.dart';
+import 'package:votefromhome/registerVC.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -18,25 +19,27 @@ class _HomeScreenState extends State<HomeScreen> {
         FirebaseFirestore.instance.collection('unsignedVC');
 
     return Scaffold(
-      body: FutureBuilder<QuerySnapshot>(
-        future: users.get(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text("Something went wrong");
-          }
-
-          if (snapshot.hasData && !snapshot.hasData) {
-            return Text("Document does not exist");
-          }
-
-          if (snapshot.connectionState == ConnectionState.done) {
-            // Map<String, dynamic> data = snapshot.data.data();
-            return Text(snapshot.data.docs[0].data()["username"]);
-          }
-
-          return Text("loading");
-        },
-      ),
-    );
+        body: SafeArea(
+      child: Scaffold(
+          backgroundColor: Color(0xFFF0F0EF),
+          body: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/character.gif'),
+              Text(
+                  'Uh Oh! Looks like you are UNREGISTERED! \n \tContinue to register with our partner',
+                  style:
+                      TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 20,),
+              OutlinedButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterVC()));
+              },child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text('Continue',style:TextStyle(fontSize: 19.0)),
+              ),)
+            ],
+          ))),
+    ));
   }
 }

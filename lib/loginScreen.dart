@@ -28,82 +28,84 @@ class _LoginScreenState extends State<LoginScreen> {
         Provider.of<UserProvider>(context, listen: true);
     return SafeArea(
       child: Scaffold(
-          body: SingleChildScrollView(
+          body: Center(
+            child: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            auth == "Sign Up"
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                        "Create an account to get started with Vote From Home",
-                        style: TextStyle(fontSize: 24)),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Sign In to get started with Vote From Home",
-                        style: TextStyle(fontSize: 24)),
-                  ),
-            Container(
-                width: 300,
-                height: 300,
-                child: Lottie.asset("assets/images/vote.json")),
-            Form(
-              key: regForm,
-              child: Column(
-                children: List.generate(
-                    2,
-                    (int index) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: buildTextFormField(textFields[index]),
-                        )),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              auth == "Sign Up"
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                          "Create an account to get started with Vote From Home",
+                          style: TextStyle(fontSize: 24)),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Sign In to get started with Vote From Home",
+                          style: TextStyle(fontSize: 24)),
+                    ),
+              Container(
+                  width: 300,
+                  height: 300,
+                  child: Lottie.asset("assets/images/vote.json")),
+              Form(
+                key: regForm,
+                child: Column(
+                  children: List.generate(
+                      2,
+                      (int index) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: buildTextFormField(textFields[index]),
+                          )),
+                ),
               ),
-            ),
-            RoundedLoadingButton(
-                controller: _authBtnController,
-                color: Color(0xFFF5a39e7),
-                onPressed: () async {
-                  try {
-                    var response = await Dio().post(
-                        "https://votefromhome.herokuapp.com/api/${auth == "Sign Up" ? "signup" : "signin"}",
-                        data: {"username": username, "password": password});
-                    User _user = User.fromMap(username, response.data);
-                    userProvider.currentUser = _user;
-                    print("userprovider set - " +
-                        userProvider.currentUser.username);
-                    _authBtnController.success();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
-                  } catch (e) {
-                    _authBtnController.error();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Something went wrong!")));
-                    Timer(Duration(seconds: 2), () {
-                      _authBtnController.reset();
+              RoundedLoadingButton(
+                  controller: _authBtnController,
+                  color: Color(0xFFF5a39e7),
+                  onPressed: () async {
+                    try {
+                      var response = await Dio().post(
+                          "https://votefromhome.herokuapp.com/api/${auth == "Sign Up" ? "signup" : "signin"}",
+                          data: {"username": username, "password": password});
+                      User _user = User.fromMap(username, response.data);
+                      userProvider.currentUser = _user;
+                      print("userprovider set - " +
+                          userProvider.currentUser.username);
+                      _authBtnController.success();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()));
+                    } catch (e) {
+                      _authBtnController.error();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Something went wrong!")));
+                      Timer(Duration(seconds: 2), () {
+                        _authBtnController.reset();
+                      });
+                    }
+                  },
+                  child: Text(auth)),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (auth == "Sign Up")
+                        auth = "Sign In";
+                      else
+                        auth = "Sign Up";
+                      username = password = "";
                     });
-                  }
-                },
-                child: Text(auth)),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    if (auth == "Sign Up")
-                      auth = "Sign In";
-                    else
-                      auth = "Sign Up";
-                    username = password = "";
-                  });
-                },
-                child: auth == "Sign Up"
-                    ? Text("Already have an account? Sign In!")
-                    : Text("Don't have an account? Sign Up"),
-              ),
-            )
-          ],
+                  },
+                  child: auth == "Sign Up"
+                      ? Text("Already have an account? Sign In!")
+                      : Text("Don't have an account? Sign Up"),
+                ),
+              )
+            ],
         ),
-      )),
+      ),
+          )),
     );
   }
 
