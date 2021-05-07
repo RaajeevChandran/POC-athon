@@ -30,11 +30,13 @@ class _LoginScreenState extends State<LoginScreen> {
         Provider.of<UserProvider>(context, listen: true);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFF0059a4),
           body: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image.asset('assets/images/logo.png',height:100),
               auth == "Sign Up"
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -45,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   : Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text("Sign In to get started with Vote From Home",
-                          style: TextStyle(fontSize: 24)),
+                          style: TextStyle(fontSize: 24,color: Colors.white,fontWeight: FontWeight.bold)),
                     ),
               Container(
                   width: 300,
@@ -64,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               RoundedLoadingButton(
                   controller: _authBtnController,
-                  color: Color(0xFFF5a39e7),
+                  color: Colors.white,
                   onPressed: () async {
                     try {
                       var response = await Dio().post(
@@ -86,8 +88,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         _authBtnController.reset();
                       });
                     }
+                    Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()));
                   },
-                  child: Text(auth)),
+                  child: Text(auth.toUpperCase(),style: TextStyle(color:Color(0xFF0059a4),fontSize: 20),)),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
@@ -101,8 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     });
                   },
                   child: auth == "Sign Up"
-                      ? Text("Already have an account? Sign In!")
-                      : Text("Don't have an account? Sign Up"),
+                      ? Text("Already have an account? Sign In!",style: TextStyle(color:Colors.white))
+                      : Text("Don't have an account? Sign Up",style: TextStyle(color:Colors.white),),
                 ),
               )
             ],
@@ -118,12 +122,12 @@ class _LoginScreenState extends State<LoginScreen> {
           width: MediaQuery.of(context).size.width * .75,
           height: 54,
           decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFFF313039), width: 3),
+            color: Colors.white,
+              // border: Border.all(color: Color(0xFFF313039), width: 3),
               borderRadius: BorderRadius.circular(20)),
           child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
-                validator: (val) {},
                 onChanged: (val) {
                   setState(() {
                     if (label == "Username")
@@ -136,11 +140,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 cursorColor: Colors.black,
                 obscureText: label == "Password",
                 decoration: InputDecoration(
+                  filled: true,
+                fillColor: Colors.white,
+                focusColor: Colors.white,
                     border: InputBorder.none,
                     hintText: label,
                     hintStyle: TextStyle(
                         color: Color(0xFFF7c7d89),
-                        fontWeight: FontWeight.bold)),
+                       )),
               ))),
     );
   }
