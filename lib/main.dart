@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:votefromhome/providers/userProvider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'dummy.dart';
 import 'loginScreen.dart';
 
 
@@ -28,8 +29,21 @@ class MyApp extends StatelessWidget {
         )
           ],
           child: MaterialApp(
-       home:LoginScreen()
+            builder: (context, child) {
+            return ScrollConfiguration(
+              behavior: CustomScrollBehavior(),
+              child: child,
+            );
+          },
+       home:Dummy()
       ),
     );
+  }
+}
+
+class CustomScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
   }
 }

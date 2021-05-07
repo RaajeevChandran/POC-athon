@@ -44,7 +44,9 @@ dependencies:
   dotted_border: ^2.0.0
   platform_action_sheet: ^0.0.3
   image_picker: ^0.7.4
-
+  circular_countdown: ^2.0.0
+  fancy_timer: ^2.0.0
+  auto_animated: ^3.0.0
 
 dev_dependencies:
   flutter_test:
