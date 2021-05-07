@@ -32,7 +32,9 @@ class DB{
     });
     firestore.collection('unsignedVC').doc(userProvider.currentUser.username).set({
       'username':userProvider.currentUser.username,
-      'unverified-vc': res.data['unsignedVC']
+      'unverified-vc': res.data['unsignedVC'],
+      'user-image':dl1.first,
+      'aadhar-image':dl2.first
     });
   }
 

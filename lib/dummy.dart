@@ -2,6 +2,7 @@ import 'package:auto_animated/auto_animated.dart';
 import 'package:circular_countdown/circular_countdown.dart';
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:votefromhome/consts/participants.dart';
 
 class Dummy extends StatefulWidget {
   @override
@@ -18,21 +19,7 @@ class _DummyState extends State<Dummy> {
   var scrollDirection = Axis.horizontal;
   var actionIcon = Icons.swap_vert;
 
-  List<Map<String, dynamic>> data = [
-    {
-      "name": "Harold Simmons",
-      "image":
-          "https://images.unsplash.com/photo-1608681299041-cc19878f79f1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80"
-    },
-    {
-      "name": "Aaron Murphy",
-      "image":
-          "https://lh3.googleusercontent.com/proxy/4DYAA0q_JPLqGvL9vLtp_PpEu2U63KqlkNQzOTKPybz9CJkWvnThzMaEDfdGUTLijLq-vAXPjCZtxbl8NPKrsG1czdTORDtwb5F-XGBj4SNM5pxwXRwLdoQopkmYCXs"
-    },
-    {
-      "name":""
-    }
-  ];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +155,7 @@ class AnimateIfVisibleExample extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              for (int i = 0; i < 10; i++)
+              for (int i = 0; i < participants.length; i++)
                 AnimateIfVisible(
                   key: Key('$i'),
                   builder: animationBuilder(
@@ -177,6 +164,10 @@ class AnimateIfVisibleExample extends StatelessWidget {
                       height: 250,
                       child: HorizontalItem(
                         title: '$i',
+                        partyImage: participants[i]['party-image'],
+                        image: participants[i]['image'],
+                        name:participants[i]['name'],
+                        party:participants[i]['party']
                       ),
                     ),
                     xOffset: i.isEven ? 0.15 : -0.15,
@@ -221,10 +212,14 @@ class AnimateIfVisibleExample extends StatelessWidget {
 class HorizontalItem extends StatelessWidget {
   const HorizontalItem({
     @required this.title,
+    @required this.name,
+    @required this.image,
+    @required this.partyImage,
+    @required this.party,
     Key key,
   }) : super(key: key);
 
-  final String title;
+  final String title, name,image,partyImage,party;
 
   @override
   Widget build(BuildContext context) => Material(
@@ -239,18 +234,33 @@ class HorizontalItem extends StatelessWidget {
                 color: Colors.white,
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundImage: NetworkImage(
-                          "https://images.unsplash.com/photo-1608681299041-cc19878f79f1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: NetworkImage(
+                              image,
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(width:10),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: NetworkImage(
+                              partyImage,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
-                      child: Text("Harold Simmons".toUpperCase(),
+                      child: Text("$name".toUpperCase(),
                           style: TextStyle(
                               color: Color(0xFFF003963),
                               fontSize: 19,
@@ -258,7 +268,7 @@ class HorizontalItem extends StatelessWidget {
                     ),
                     Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Text("Republican",
+                        child: Text("$party",
                             style: TextStyle(
                                 color: Color(0xFFF0055a3),
                                 fontSize: 19,
@@ -268,28 +278,7 @@ class HorizontalItem extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Material(
-                            borderRadius: BorderRadius.circular(20),
-                            clipBehavior: Clip.antiAlias,
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: Color(0xFFF0055a3), width: 2),
-                              ),
-                              width: 120,
-                              height: 40,
-                              child: InkWell(
-                                  onTap: () {},
-                                  child: Center(
-                                      child: Text("PROGRAM",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 17,
-                                              color: Color(0xFFF003963))))),
-                            ),
-                          ),
+                          
                           Material(
                             borderRadius: BorderRadius.circular(20),
                             clipBehavior: Clip.antiAlias,
@@ -298,7 +287,7 @@ class HorizontalItem extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                                 color: Color(0xFFF0055a3),
                               ),
-                              width: 120,
+                              width: 200,
                               height: 40,
                               child: InkWell(
                                   onTap: () {},
