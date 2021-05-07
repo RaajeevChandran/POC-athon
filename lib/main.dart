@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:votefromhome/homeScreen.dart';
 import 'package:votefromhome/providers/userProvider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dummy.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
               child: child,
             );
           },
-       home:Dummy()
+       home:LoginScreen()
       ),
     );
   }

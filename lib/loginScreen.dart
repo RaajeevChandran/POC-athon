@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           _authBtnController.success();
                           _authBtnController.reset();
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Dummy()));
+                              MaterialPageRoute(builder: (context) => HomeScreen()));
                         } catch (e) {
                           _authBtnController.error();
                           ScaffoldMessenger.of(context).showSnackBar(
