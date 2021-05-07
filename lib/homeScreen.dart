@@ -15,8 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: true);
     // print(userProvider.currentUser.username);
-    CollectionReference users =
-        FirebaseFirestore.instance.collection('unsignedVC');
 
     return Scaffold(
         body: SafeArea(

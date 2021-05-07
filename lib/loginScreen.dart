@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:votefromhome/dummy.dart';
 import 'package:votefromhome/models/user.dart';
 import 'package:votefromhome/providers/userProvider.dart';
 
@@ -30,8 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return SafeArea(
       child: Scaffold(
           body: Center(
-            child: SingleChildScrollView(
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               auth == "Sign Up"
@@ -66,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Color(0xFFF5a39e7),
                   onPressed: () async {
                     try {
-                      
                       var response = await Dio().post(
                           "https://votefromhome.herokuapp.com/api/${auth == "Sign Up" ? "signup" : "signin"}",
                           data: {"username": username, "password": password});
@@ -75,8 +75,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       print("userprovider set - " +
                           userProvider.currentUser.username);
                       _authBtnController.success();
+                      _authBtnController.reset();
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()));
+                          MaterialPageRoute(builder: (context) => Dummy()));
                     } catch (e) {
                       _authBtnController.error();
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -105,9 +106,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               )
             ],
+          ),
         ),
-      ),
-          )),
+      )),
     );
   }
 
