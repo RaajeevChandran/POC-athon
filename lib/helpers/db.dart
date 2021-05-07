@@ -11,7 +11,7 @@ class DB{
   FirebaseStorage _storage = FirebaseStorage.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  Future<void>  addImages(UserProvider userProvider,File img1,File img2,var ip) async {
+  Future<void>  addImages(UserProvider userProvider,File img1,File img2) async {
     await _firebaseAuth.signInAnonymously();
     Reference reference = _storage.ref().child('aadhar-img').child(userProvider.currentUser.username+DateTime.now().toString());
     Reference reference2 = _storage.ref().child('aadhar-holding').child(userProvider.currentUser.username+DateTime.now().toString());
@@ -32,10 +32,9 @@ class DB{
     });
     firestore.collection('unsignedVC').doc(userProvider.currentUser.username).set({
       'username':userProvider.currentUser.username,
-      'unverified_vc': res.data['unsignedVC'],
-      'user_image':dl1.first,
-      'aadhar_image':dl2.first,
-      'ip':ip
+      'unverified-vc': res.data['unsignedVC'],
+      'user-image':dl1.first,
+      'aadhar-image':dl2.first
     });
   }
 

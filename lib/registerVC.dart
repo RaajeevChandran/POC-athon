@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dart_ipify/dart_ipify.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,7 +7,6 @@ import 'package:platform_action_sheet/platform_action_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:votefromhome/helpers/db.dart';
-import 'package:votefromhome/notVerified.dart';
 
 import 'providers/userProvider.dart';
 
@@ -21,7 +19,7 @@ RoundedLoadingButtonController controller = RoundedLoadingButtonController();
 
 class _RegisterVCState extends State<RegisterVC> {
   File _image, _image2;
-
+  
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider =
@@ -32,8 +30,7 @@ class _RegisterVCState extends State<RegisterVC> {
         appBar: AppBar(
           title: Row(
             children: [
-              Container(
-                  width: 120, child: Image.asset('assets/images/logo.png')),
+              Container(width:120,child: Image.asset('assets/images/logo.png')),
               Text('Enter details to submit to verifier'),
             ],
           ),
@@ -42,12 +39,12 @@ class _RegisterVCState extends State<RegisterVC> {
           backgroundColor: Color(0xFF0059a4),
         ),
         body: SingleChildScrollView(
-          child: Center(
+                  child: Center(
             child: Column(children: [
               SizedBox(height: 10),
-              buildTextField('Enter your name', TextInputType.name),
+              buildTextField('Enter your name',TextInputType.name),
               SizedBox(height: 13),
-              buildTextField('Enter your Aadhar number', TextInputType.number),
+              buildTextField('Enter your Aadhar number',TextInputType.number),
               SizedBox(
                 height: 20,
               ),
@@ -70,10 +67,7 @@ class _RegisterVCState extends State<RegisterVC> {
                               )
                             : Image.file(_image, width: 250, height: 250),
                         // SizedBox(height: 1,),
-                        Text(
-                          'Add your Aadhar document ',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        Text('Add your Aadhar document ',style: TextStyle(color: Colors.white),),
                         SizedBox(
                           height: 3,
                         )
@@ -93,6 +87,7 @@ class _RegisterVCState extends State<RegisterVC> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
+
                       children: [
                         _image2 == null
                             ? Image.asset('assets/images/hold2.png',
@@ -102,24 +97,17 @@ class _RegisterVCState extends State<RegisterVC> {
                                 width: 250,
                                 height: 250,
                               ),
-                        Text(
-                          'Add a image of yourself holding your Aadhar',
-                          style: TextStyle(color: Colors.white),
-                        )
+                        Text('Add a image of yourself holding your Aadhar',style: TextStyle(color:Colors.white),)
                       ],
                     ),
                   ),
                 ),
               ),
               SizedBox(height: 20),
-              RoundedLoadingButton(
-                  controller: controller,
+              RaisedButton(
+                  // controller: controller,
                   onPressed: () async {
-                    final ipv4 = await Ipify.ipv4();
-                    await DB().addImages(userProvider, _image, _image2,ipv4);
-                    controller.success();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => NotVerified()));
+                    await DB().addImages( userProvider, _image, _image2);
                   },
                   child: Text('Submit to verify'))
             ]),
@@ -134,6 +122,10 @@ class _RegisterVCState extends State<RegisterVC> {
       ActionSheetAction(
         text: "Take Picture",
         onPressed: () => getImage(ImageSource.camera, context, isAfter),
+      ),
+      ActionSheetAction(
+        text: "Choose picture from gallery",
+        onPressed: () => getImage(ImageSource.gallery, context, isAfter),
       ),
     ]);
   }
@@ -157,30 +149,31 @@ class _RegisterVCState extends State<RegisterVC> {
     }
   }
 
-  Widget buildTextField(String label, TextInputType type) {
+  Widget buildTextField(String label,TextInputType type) {
     return Center(
       child: Container(
+        
           width: MediaQuery.of(context).size.width * .75,
           height: 54,
           decoration: BoxDecoration(
-              color: Colors.white,
+            color: Colors.white,
               //border: Border.all(color: Color(0xFFF313039), width: 3),
               borderRadius: BorderRadius.circular(20)),
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: TextFormField(
+              
               keyboardType: type,
               style: TextStyle(color: Color(0xFFF191720)),
               cursorColor: Colors.black,
               decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  focusColor: Colors.white,
+                filled: true,
+                fillColor: Colors.white,
+                focusColor: Colors.white,
                   border: InputBorder.none,
                   hintText: label,
                   hintStyle: TextStyle(
-                    color: Color(0xFFF7c7d89),
-                  )),
+                      color: Color(0xFFF7c7d89),)),
             ),
           )),
     );

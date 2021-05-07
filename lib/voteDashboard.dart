@@ -9,8 +9,7 @@ class _VoteDashboardState extends State<VoteDashboard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child:Text('Dashboard'),
-      
+      child:Text('Dashboard')
     );
   }
 }
